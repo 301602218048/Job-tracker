@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI";
+  background-color: #f9f9fb;
+  color: #333;
+  line-height: 1.6;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  color: white;
+  padding: 8px 20px;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 40px;
+  border-radius: 6px;
+}
+
+.navbar button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.navbar button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-body > div {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.heading {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: rgb(68, 68, 68);
+}
+
+#p_info input {
+  max-width: 300px;
+}
+
+form input,
+form select {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s ease-in-out;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #3498db;
+  outline: none;
+  background-color: #fff;
+}
+
+form button,
+.main-body > div button {
+  padding: 10px 16px;
+  width: 70px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+form button[type="submit"] {
+  background-color: #3498db;
+  color: white;
+}
+
+form button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-content label {
+  font-weight: 400;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-buttons button#cancelBtn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.job-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.job-table th,
+.job-table td {
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.job-table th {
+  background-color: #f6f6f6;
+  font-weight: 600;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.job-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.job-table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.job-table td:nth-child(10) {
+  background-color: #fcd770;
+  font-weight: bold;
+  text-align: center;
+}

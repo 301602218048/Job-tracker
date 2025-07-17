@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Tracker</title>
+    <link rel="stylesheet" href="../css/profile.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-left">
+        <div>
+          <a href="./jobtrack.html">
+            <img src="../img/logo.jpg" class="logo" />
+          </a>
+        </div>
+        <div>
+          <a href="./jobtrack.html">
+            <button>Job Tracker</button>
+          </a>
+        </div>
+        <div>
+          <a href="./dashboard.html">
+            <button>DashBoard</button>
+          </a>
+        </div>
+        <div>
+          <a href="./company.html">
+            <button>Company</button>
+          </a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div id="profile">
+          <button>Profile</button>
+        </div>
+        <div id="logout">
+          <button>Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-body">
+      <div>
+        <label class="heading">Personal Information</label>
+        <form id="p_info" onsubmit="handlePInfo(event)">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" />
+          </div>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+      <div>
+        <label class="heading">Career Goals</label>
+        <button type="button" id="cgoals">Edit</button>
+        <div id="cgoalDOM"></div>
+        <div class="modal" id="careerGoalModal">
+          <div class="modal-content">
+            <form id="career_goal" onsubmit="handleCareerGoal(event)">
+              <h3>Edit Career Goals</h3>
+              <div>
+                <label for="career_goal">Career Goal</label>
+                <select name="career_goal" id="career_goal">
+                  <option value="A fresh start">A fresh start</option>
+                  <option value="Work that fits my strength">Work that fits my strength</option>
+                  <option value="Better work-life balance">Better work-life balance</option>
+                  <option value="Develope new skills">Develope new skills</option>
+                </select>
+              </div>
+              <div>
+                <label for="target_title">Target Title</label>
+                <input type="text" name="target_title" id="target_title" required />
+              </div>
+              <div>
+                <label for="target_date">Target Date</label>
+                <input type="date" name="target_date" id="target_date" required />
+              </div>
+              <div>
+                <label for="salary_min">Min Salary</label>
+                <input type="number" name="salary_min" id="salary_min" min="0"/>
+              </div>
+              <div>
+                <label for="salary_max">Max Salary</label>
+                <input type="number" name="salary_max" id="salary_max" min="0"/>
+              </div>
+              <div class="modal-buttons">
+                <button type="button" id="cancelBtn">Cancel</button>
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="../js/profile.js"></script>
+</html>

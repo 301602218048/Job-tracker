@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Company Management</title>
+    <link rel="stylesheet" href="../css/company.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="./jobtrack.html"><img src="../img/logo.jpg" class="logo" /></a>
+        <button onclick="location.href='./jobtrack.html'">Job Tracker</button>
+        <button onclick="location.href='./dashboard.html'">Dashboard</button>
+        <button>Company</button>
+      </div>
+      <div class="navbar-right">
+        <button onclick="location.href='./profile.html'">Profile</button>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <!-- Left: Company List -->
+      <div class="company-list" id="companyList">
+        <!-- JS will populate cards here -->
+      </div>
+
+      <!-- Right: Company Form -->
+      <div class="company-form">
+        <h2 id="formTitle">Add New Company</h2>
+        <form id="companyForm" onsubmit="handleSubmit(event)">
+          <input type="text" id="name" placeholder="Company Name" required />
+          <input type="text" id="industry" placeholder="Industry" />
+          <input type="text" id="size" placeholder="Size (e.g. 50-100)" />
+          <input type="text" id="contact" placeholder="Contact" />
+          <textarea id="notes" placeholder="Notes"></textarea>
+          <button type="submit">Save</button>
+          <input type="hidden" id="companyId" />
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="../js/company.js"></script>
+  </body>
+</html>

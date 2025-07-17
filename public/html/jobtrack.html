@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Tracker</title>
+    <link rel="stylesheet" href="../css/jobtrack.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-left">
+        <div>
+          <a href="./jobtrack.html">
+            <img src="../img/logo.jpg" class="logo" />
+          </a>
+        </div>
+        <div>
+          <a href="./jobtrack.html">
+            <button>Job Tracker</button>
+          </a>
+        </div>
+        <div>
+          <a href="./dashboard.html">
+            <button>DashBoard</button>
+          </a>
+        </div>
+        <div>
+          <a href="./company.html">
+            <button>Company</button>
+          </a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div id="profile">
+          <button>Profile</button>
+        </div>
+        <div id="logout">
+          <button>Logout</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-body">
+      <div>
+        <input type="text" id="search" />
+        <select name="filter" id="filter">
+          <option value="">All Statuses</option>
+          <option value="Applied">Applied</option>
+          <option value="Interviewed">Interviewed</option>
+          <option value="Offered">Offered</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Accepted">Accepted</option>
+        </select>
+
+        <button>Add a New Job</button>
+        <div id="jobModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Job Application</h2>
+            <form id="jobForm" onsubmit="addJob(event)">
+              <label for="company">Company Name:</label>
+              <input type="text" id="company" name="company" required />
+
+              <label for="title">Job Title:</label>
+              <input type="text" id="title" name="title" required />
+
+              <label for="date">Application Date:</label>
+              <input type="date" id="date" name="date" required />
+
+              <label for="follow_up">Follow Up:</label>
+              <input type="date" id="follow_up" name="follow_up" />
+
+              <label for="status">Status:</label>
+              <select id="status" name="status">
+                <option value="Applied">Applied</option>
+                <option value="Interviewed">Interviewed</option>
+                <option value="Offered">Offered</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Accepted">Accepted</option>
+              </select>
+
+              <label for="notes">Notes:</label>
+              <textarea id="notes" name="notes" rows="3"></textarea>
+
+              <label for="resume">Resume (PDF/DOC):</label>
+              <input
+                type="file"
+                id="resume"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+              />
+
+              <label for="coverLetter">Cover Letter (PDF/DOC):</label>
+              <input
+                type="file"
+                id="coverLetter"
+                name="coverLetter"
+                accept=".pdf,.doc,.docx"
+              />
+              <button type="submit">Save Job</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="bookmarks">
+        <table class="job-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Job Position</th>
+              <th>Company</th>
+              <th>Max. Salary</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Date Saved</th>
+              <th>Date Applied</th>
+              <th>Follow up</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="../js/jobtrack.js"></script>
+</html>

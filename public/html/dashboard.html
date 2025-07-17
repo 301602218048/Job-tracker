@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-left">
+        <div>
+          <a href="./jobtrack.html">
+            <img src="../img/logo.jpg" class="logo" />
+          </a>
+        </div>
+        <div>
+          <a href="./jobtrack.html">
+            <button>Job Tracker</button>
+          </a>
+        </div>
+        <div>
+          <button>DashBoard</button>
+        </div>
+        <div>
+          <a href="./company.html">
+            <button>Company</button>
+          </a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div id="profile">
+          <button>Profile</button>
+        </div>
+        <div id="logout">
+          <button>Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-container">
+      <div class="chart-box">
+        <h2>Application Status Summary</h2>
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <h2>Applications Over Time</h2>
+        <canvas id="timelineChart"></canvas>
+      </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+  </body>
+</html>
