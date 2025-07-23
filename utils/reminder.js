@@ -1,6 +1,8 @@
+const { Job, User, Company } = require("../models");
+const { fn, col, where } = require("sequelize");
 const cron = require("node-cron");
-const { Job, User } = require("../models");
 const sgMail = require("@sendgrid/mail");
+
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 const sendReminderEmail = async ({ to, subject, text }) => {
@@ -19,28 +21,33 @@ const sendReminderEmail = async ({ to, subject, text }) => {
   }
 };
 
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("01 00 * * *", async () => {
   try {
     const today = new Date().toISOString().split("T")[0];
 
     const reminders = await Job.findAll({
-      where: {
-        followupDate: today,
-      },
-      include: {
-        model: User,
-        attributes: ["email", "name"],
-      },
+      where: where(fn("DATE", col("followupDate")), today),
+      include: [
+        {
+          model: User,
+          attributes: ["email", "name"],
+        },
+        {
+          model: Company,
+          attributes: ["company"],
+        },
+      ],
     });
 
     for (const reminder of reminders) {
-      const user = reminder.User;
-      if (!user || !user.email) continue;
+      const user = reminder.user;
+      const company = reminder.company;
+      if (!user?.email) continue;
 
       await sendReminderEmail({
         to: user.email,
-        subject: `Follow-up Reminder: ${reminder.title} at ${reminder.company}`,
-        text: `Hey ${user.name},\n\nThis is your reminder to follow up on the job "${reminder.title}" at ${reminder.company}.\n\n- Job Tracker`,
+        subject: `Follow-up Reminder: ${reminder.title} at ${company.company}`,
+        text: `Hey ${user.name},\n\nThis is your reminder to follow up on the job "${reminder.title}" at ${company.company}.\n\n– Job Tracker`,
       });
     }
   } catch (err) {

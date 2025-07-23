@@ -1,27 +1,29 @@
-const AWS = require("aws-sdk");
-const multerS3 = require("multer-s3");
-const multer = require("multer");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  },
 });
 
-const s3 = new AWS.S3();
+async function uploadToS3(file) {
+  if (!file) return null;
 
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.BUCKET_NAME,
-    acl: "public-read",
-    metadata: (req, file, cb) => {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: (req, file, cb) => {
-      const fileName = `${Date.now()}-${file.originalname}`;
-      cb(null, fileName);
-    },
-  }),
-});
+  const uniqueName = `${Date.now()}-${file.originalname}`;
 
-module.exports = upload;
+  const command = new PutObjectCommand({
+    Bucket: process.env.BUCKET_NAME,
+    Key: uniqueName,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+    ACL: "public-read",
+  });
+
+  await s3Client.send(command);
+
+  return `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uniqueName}`;
+}
+
+module.exports = { uploadToS3 };

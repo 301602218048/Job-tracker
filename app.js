@@ -25,7 +25,7 @@ app.use("/", (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-db.sync({ alter: true })
+db.sync({ alter: false })
   .then(() => {
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);

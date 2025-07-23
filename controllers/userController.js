@@ -60,8 +60,8 @@ const editUser = async (req, res) => {
     if (!e) {
       return res.status(404).json({ msg: "User not found", success: false });
     }
-    e.name = name;
-    e.email = email;
+    if (name) e.name = name;
+    if (email) e.email = email;
     await e.save();
     res.status(200).json({
       msg: "Profile edited successfully",

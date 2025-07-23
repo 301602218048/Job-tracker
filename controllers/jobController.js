@@ -1,5 +1,6 @@
 const Job = require("../models/job");
 const Company = require("../models/company");
+const { uploadToS3 } = require("../utils/s3");
 const { Op } = require("sequelize");
 
 const addJob = async (req, res) => {
@@ -7,9 +8,11 @@ const addJob = async (req, res) => {
     const { company, title, applicationDate, followupDate, status, notes } =
       req.body;
 
-    const resume = req.files.resume ? req.files.resume[0].location : null;
-    const coverLetter = req.files.coverLetter
-      ? req.files.coverLetter[0].location
+    const resumeUrl = req.files.resume
+      ? await uploadToS3(req.files.resume[0])
+      : null;
+    const coverLetterUrl = req.files.coverLetter
+      ? await uploadToS3(req.files.coverLetter[0])
       : null;
 
     const [companyInstance] = await Company.findOrCreate({
@@ -22,8 +25,8 @@ const addJob = async (req, res) => {
       followupDate,
       status,
       notes,
-      resume,
-      coverLetter,
+      resume: resumeUrl,
+      coverLetter: coverLetterUrl,
       userId: req.user.id,
       companyId: companyInstance.id,
     });
@@ -50,44 +53,45 @@ const getFilteredJobs = async (req, res) => {
   try {
     const { search, status, startDate, endDate } = req.query;
 
-    const whereClause = {
+    const jobWhere = {
       userId: req.user.id,
     };
 
     if (status) {
-      whereClause.status = status;
+      jobWhere.status = status;
     }
 
     if (startDate || endDate) {
-      whereClause.applicationDate = {};
-      if (startDate) {
-        whereClause.applicationDate[Op.gte] = new Date(startDate);
-      }
-      if (endDate) {
-        whereClause.applicationDate[Op.lte] = new Date(endDate);
-      }
+      jobWhere.applicationDate = {};
+      if (startDate) jobWhere.applicationDate[Op.gte] = new Date(startDate);
+      if (endDate) jobWhere.applicationDate[Op.lte] = new Date(endDate);
     }
 
-    const includeClause = [
-      {
-        model: Company,
-        attributes: ["company"],
-        ...(search && {
-          where: {
-            company: { [Op.iLike]: `%${search}%` },
-          },
-          required: true,
-        }),
-      },
-    ];
+    const searchFilter = search
+      ? {
+          [Op.or]: [
+            { title: { [Op.like]: `%${search}%` } },
+            { "$company.company$": { [Op.like]: `%${search}%` } },
+          ],
+        }
+      : {};
 
     const jobs = await Job.findAll({
-      where: whereClause,
-      include: includeClause,
+      where: {
+        ...jobWhere,
+        ...searchFilter,
+      },
+      include: [
+        {
+          model: Company,
+          attributes: ["company"],
+        },
+      ],
     });
 
     res.status(200).json({ msg: "Jobs retrieved", success: true, jobs });
   } catch (error) {
+    console.error("Error in getFilteredJobs:", error);
     res.status(500).json({ msg: error.message, success: false });
   }
 };
@@ -102,11 +106,14 @@ const updateJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({ msg: "Job not found", success: false });
     }
-
-    const updatedFields = req.body;
-
-    await job.update(updatedFields);
-
+    const data = req.body;
+    data.resume = req.files.resume
+      ? await uploadToS3(req.files.resume[0])
+      : null;
+    data.coverLetter = req.files.coverLetter
+      ? await uploadToS3(req.files.coverLetter[0])
+      : null;
+    await job.update(data);
     res
       .status(200)
       .json({ msg: "Job updated successfully", success: true, job });
@@ -125,9 +132,7 @@ const deleteJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({ msg: "Job not found", success: false });
     }
-
     await job.destroy();
-
     res.status(200).json({ msg: "Job deleted successfully", success: true });
   } catch (error) {
     res.status(500).json({ msg: error.message, success: false });

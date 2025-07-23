@@ -13,7 +13,11 @@ profile.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  if (!token) {
+    window.location.href = "./html/login.html";
+  }
   try {
+    document.body.style.display = "block";
     const [statusRes, timelineRes] = await Promise.all([
       fetch(`${api}/status-summary`, {
         headers: { authorization: `Bearer ${token}` },

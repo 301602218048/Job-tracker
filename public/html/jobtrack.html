@@ -6,7 +6,7 @@
     <title>Job Tracker</title>
     <link rel="stylesheet" href="../css/jobtrack.css" />
   </head>
-  <body>
+  <body style="display: none">
     <div class="navbar">
       <div class="navbar-left">
         <div>
@@ -41,15 +41,21 @@
     </div>
     <div class="main-body">
       <div>
+        <label for="search" style="font-weight: 500">Search:</label>
         <input type="text" id="search" />
         <select name="filter" id="filter">
           <option value="">All Statuses</option>
+          <option value="Bookmarked">Bookmarked</option>
           <option value="Applied">Applied</option>
           <option value="Interviewed">Interviewed</option>
-          <option value="Offered">Offered</option>
           <option value="Rejected">Rejected</option>
           <option value="Accepted">Accepted</option>
         </select>
+
+        <label for="startDate" style="font-weight: 500">Start Date:</label>
+        <input type="date" id="startDate" />
+        <label for="endDate" style="font-weight: 500">End Date:</label>
+        <input type="date" id="endDate" />
 
         <button>Add a New Job</button>
         <div id="jobModal" class="modal">
@@ -71,9 +77,9 @@
 
               <label for="status">Status:</label>
               <select id="status" name="status">
+                <option value="Bookmarked">Bookmarked</option>
                 <option value="Applied">Applied</option>
                 <option value="Interviewed">Interviewed</option>
-                <option value="Offered">Offered</option>
                 <option value="Rejected">Rejected</option>
                 <option value="Accepted">Accepted</option>
               </select>
@@ -105,15 +111,15 @@
         <table class="job-table">
           <thead>
             <tr>
-              <th><input type="checkbox" /></th>
               <th>Job Position</th>
               <th>Company</th>
-              <th>Max. Salary</th>
-              <th>Location</th>
               <th>Status</th>
               <th>Date Saved</th>
               <th>Date Applied</th>
               <th>Follow up</th>
+              <th>Resume</th>
+              <th>coverLetter</th>
+              <th>Edit / Delete</th>
             </tr>
           </thead>
           <tbody></tbody>

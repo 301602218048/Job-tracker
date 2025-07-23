@@ -1,8 +1,12 @@
 const api = "http://localhost:3000";
 const token = localStorage.getItem("token");
-
 const logout = document.getElementById("logout");
 const profile = document.getElementById("profile");
+const modal = document.getElementById("jobModal");
+const openModalBtn = document.querySelector(".main-body button");
+const closeModal = document.querySelector(".close");
+const form = document.getElementById("jobForm");
+const tbody = document.querySelector("tbody");
 
 logout.addEventListener("click", () => {
   localStorage.removeItem("token");
@@ -12,12 +16,6 @@ logout.addEventListener("click", () => {
 profile.addEventListener("click", () => {
   window.location.href = "./profile.html";
 });
-
-const modal = document.getElementById("jobModal");
-const openModalBtn = document.querySelector(".main-body button");
-const closeModal = document.querySelector(".close");
-const form = document.getElementById("jobForm");
-const tbody = document.querySelector("tbody");
 
 openModalBtn.addEventListener("click", () => {
   modal.style.display = "block";
@@ -36,18 +34,28 @@ window.onclick = (e) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (!token) {
+    window.location.href = "./html/login.html";
+  }
+  document.body.style.display = "block";
   loadJobs();
   document.getElementById("search").addEventListener("input", loadJobs);
   document.getElementById("filter").addEventListener("change", loadJobs);
+  document.getElementById("startDate").addEventListener("change", loadJobs);
+  document.getElementById("endDate").addEventListener("change", loadJobs);
 });
 
 async function loadJobs() {
   const search = document.getElementById("search").value;
   const status = document.getElementById("filter").value;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
 
   const params = new URLSearchParams();
   if (search) params.append("search", search);
   if (status) params.append("status", status);
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
 
   try {
     const res = await fetch(`${api}/job/getFilteredJobs?${params}`, {
@@ -71,11 +79,8 @@ function renderJobs(jobs) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td><input type="checkbox" /></td>
       <td>${job.title}</td>
       <td>${job.company ? job.company.company : "N/A"}</td>
-      <td>—</td>
-      <td>—</td>
       <td>${job.status}</td>
       <td>${new Date(
         job.createdAt || job.applicationDate
@@ -83,6 +88,10 @@ function renderJobs(jobs) {
       <td>${new Date(job.applicationDate).toLocaleDateString()}</td>
       <td>${
         job.followupDate ? new Date(job.followupDate).toLocaleDateString() : "—"
+      }</td>
+      <td>${job.resume ? `<a href="${job.resume}">link</a>` : "N/A"}</td>
+      <td>${
+        job.coverLetter ? `<a href="${job.coverLetter}">link</a>` : "N/A"
       }</td>
       <td>
         <button onclick='editJob(${JSON.stringify(job)})'>Edit</button>
@@ -146,7 +155,7 @@ function editJob(job) {
   form.dataset.jobId = job.id;
   modal.style.display = "block";
 
-  document.getElementById("company").value = job.company || "";
+  document.getElementById("company").value = job.company.company || "";
   document.getElementById("title").value = job.title || "";
   document.getElementById("date").value = job.applicationDate
     ? job.applicationDate.split("T")[0]

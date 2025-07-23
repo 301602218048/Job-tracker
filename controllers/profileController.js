@@ -4,11 +4,14 @@ const addCareerGoal = async (req, res) => {
   try {
     const { careerGoal, targetTitle, targetDate, minSalary, maxSalary } =
       req.body;
-    const c = Profile.findByPk(req.user.id);
+    const c = await Profile.findOne({ where: { userId: req.user.id } });
     if (c) {
+      await Profile.update(req.body, {
+        where: { userId: req.user.id },
+      });
       return res
-        .status(400)
-        .json({ msg: "career goal already exists", success: false });
+        .status(200)
+        .json({ msg: "career goal updated successfully", success: true });
     }
     await Profile.create({
       careerGoal,
@@ -28,7 +31,7 @@ const addCareerGoal = async (req, res) => {
 
 const getCGoals = async (req, res) => {
   try {
-    const cgoals = await Profile.findAll({ where: { userId: req.user.id } });
+    const cgoals = await Profile.findOne({ where: { userId: req.user.id } });
     if (!cgoals || cgoals.length === 0) {
       return res
         .status(204)

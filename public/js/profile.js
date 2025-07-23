@@ -20,7 +20,11 @@ cancelBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  if (!token) {
+    window.location.href = "./html/login.html";
+  }
   try {
+    document.body.style.display = "block";
     const res = await axios.get(`${api}/profile/getCGoals`, {
       headers: { authorization: `Bearer ${token}` },
     });
@@ -32,12 +36,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (err) {
     console.log(err);
   }
+});
 
-  function rendercgoals(cgoals) {
-    const table = document.createElement("table");
-    table.className = "job-table";
+function rendercgoals(cgoals) {
+  const table = document.createElement("table");
+  table.className = "job-table";
 
-    table.innerHTML = `
+  table.innerHTML = `
     <thead>
       <tr>
         <th>Career Goal</th>
@@ -48,39 +53,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>
     </thead>
     <tbody>
-      ${cgoals
-        .map((cgoal) => {
-          const careerGoal = `${cgoal.careerGoal}`;
-          const targetTitle = cgoal.targetTitle;
-          const targetDate = formatDate(cgoal.targetDate);
-          const minSalary = cgoal.minSalary;
-          const maxSalary = cgoal.maxSalary;
-
-          return `
-          <tr data-job='${JSON.stringify(cgoal)}'>
-            <td>${careerGoal}</td>
-            <td>${targetTitle}</td>
-            <td>${targetDate}</td>
-            <td>${minSalary}</td>
-            <td>${maxSalary}</td>
-          </tr>
-        `;
-        })
-        .join("")}
+      <tr data-job='${JSON.stringify(cgoals)}'>
+        <td>${cgoals.careerGoal}</td>
+        <td>${cgoals.targetTitle}</td>
+        <td>${formatDate(cgoals.targetDate)}</td>
+        <td>${cgoals.minSalary}</td>
+        <td>${cgoals.maxSalary}</td>
+      </tr>
     </tbody>
   `;
 
-    cgoalDOM.innerHTML = "";
-    cgoalDOM.appendChild(table);
-  }
+  cgoalDOM.innerHTML = "";
+  cgoalDOM.appendChild(table);
+}
 
-  function formatDate(dateStr) {
-    if (!dateStr) return "N/A";
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return "N/A";
-    return d.toISOString().split("T")[0];
-  }
-});
+function formatDate(dateStr) {
+  if (!dateStr) return "N/A";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "N/A";
+  return d.toISOString().split("T")[0];
+}
 
 async function handlePInfo(e) {
   try {
@@ -113,8 +105,9 @@ async function handleCareerGoal(e) {
     const response = await axios.post(`${api}/profile/cgoal`, careerGoal, {
       headers: { authorization: `Bearer ${token}` },
     });
-    if (response.status === 201) {
+    if (response.data.success) {
       modal.style.display = "none";
+      rendercgoals(careerGoal);
     }
   } catch (error) {
     console.log(error);

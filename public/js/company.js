@@ -7,6 +7,10 @@ function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (!token) {
+    window.location.href = "./html/login.html";
+  }
+  document.body.style.display = "block";
   loadCompanies();
 });
 

@@ -5,7 +5,7 @@
     <title>Company Management</title>
     <link rel="stylesheet" href="../css/company.css" />
   </head>
-  <body>
+  <body style="display: none">
     <div class="navbar">
       <div class="navbar-left">
         <a href="./jobtrack.html"><img src="../img/logo.jpg" class="logo" /></a>
@@ -20,12 +20,8 @@
     </div>
 
     <div class="main-content">
-      <!-- Left: Company List -->
-      <div class="company-list" id="companyList">
-        <!-- JS will populate cards here -->
-      </div>
+      <div class="company-list" id="companyList"></div>
 
-      <!-- Right: Company Form -->
       <div class="company-form">
         <h2 id="formTitle">Add New Company</h2>
         <form id="companyForm" onsubmit="handleSubmit(event)">
